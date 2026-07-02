@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
-import { Inter, Geist } from "next/font/google";
+import { Outfit } from "next/font/google";
 import "./globals.css";
-import Navbar from "../components/Navbar";
-import { cn } from "@/src/lib/utils";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Navbar } from "@/components/navbar";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
-
-const inter = Inter({ subsets: ["latin"] });
+const outfit = Outfit({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Campus Challenges",
-  description: "Plateforme de défis pour étudiants",
+  description: "Plateforme de défis étudiants",
 };
 
 export default function RootLayout({
@@ -19,12 +17,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className={cn("font-sans", geist.variable)}>
-      <body className={inter.className}>
-        <Navbar />
-        <main className="min-h-screen bg-gray-50 dark:bg-gray-950">
-          {children}
-        </main>
+    <html lang="fr" suppressHydrationWarning>
+      <body className={`${outfit.className} min-h-screen flex flex-col bg-background text-foreground antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar />
+          <main className="flex-1 flex flex-col">
+            {children}
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );
